@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+/* Light Blue Theme (default) */
+body {
+  background: #cfe8ff; /* light blue background */
+  color: #1e3a8a; /* dark blue text */
+  transition: all 0.3s ease;
+}
+
+/* Header / Navbar */
+header {
+  background-color: #93c5fd; /* sky blue */
+  border-color: #60a5fa;
+  color: #1e3a8a;
+}
+
+/* Input fields */
+input {
+  background-color: #bfdbfe;
+  color: #1e3a8a;
+  border-color: #60a5fa;
+}
+
+/* Movie cards */
+.movie-card {
+  background-color: #dbeafe;
+  color: #1e3a8a;
+}
+
+/* Buttons */
+button {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+button:hover {
+  background-color: #2563eb;
+}
+
+/* Links hover */
+a:hover {
+  color: #1e40af;
+}
+
+/* --------------------------- */
+/* Dark Blue Theme */
+/* --------------------------- */
+.dark-theme {
+  background: #0f172a; /* very dark blue */
+  color: #93c5fd; /* light blue text */
+}
+
+.dark-theme header {
+  background-color: #1e3a8a; /* deep blue */
+  border-color: #1e40af;
+  color: #93c5fd;
+}
+
+.dark-theme input {
+  background-color: #1e3a8a;
+  color: #dbeafe;
+  border-color: #2563eb;
+}
+
+.dark-theme .movie-card {
+  background-color: #1e40af;
+  color: #dbeafe;
+}
+
+.dark-theme button {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.dark-theme button:hover {
+  background-color: #1e3a8a;
+}
+
+.dark-theme a:hover {
+  color: #60a5fa;
+}
