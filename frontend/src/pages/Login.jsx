@@ -15,6 +15,8 @@ function Login() {
   const isDark = useSelector((state) => state.theme.isDark);
   const reduxUser = useSelector((state) => state.user.user);
 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
   useEffect(() => {
     if (reduxUser) {
       navigate("/movies", { replace: true });
@@ -41,7 +43,7 @@ function Login() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/users/login", {
+      const res = await axios.post(`${API_URL}/api/users/login`, {
         username,
         password,
       });

@@ -10,6 +10,8 @@ export default function Profile() {
   const { user } = useSelector((state) => state.user);
   const isDark = useSelector((state) => state.theme.isDark);
 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
   const [profile, setProfile] = useState({
     name: "",
     username: "",
@@ -26,10 +28,10 @@ export default function Profile() {
 
     console.log(user._id);
 
-    fetch(`http://localhost:5000/api/profile/${user._id}`)
+    fetch(`${API_URL}/api/profile/${user._id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("data ",data);
+        console.log("data ", data);
         setProfile({
           name: data.name || "",
           username: data.username || "",
@@ -48,14 +50,11 @@ export default function Profile() {
 
   const handleSave = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/profile/${user._id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(profile),
-        }
-      );
+      const res = await fetch(`${API_URL}/api/profile/${user._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profile),
+      });
 
       const data = await res.json();
       if (res.ok) {
@@ -76,7 +75,7 @@ export default function Profile() {
     try {
       const isFav = favorites.some((m) => m.id === movie.id);
       const res = await fetch(
-        `http://localhost:5000/api/users/${user.username}/favorites`,
+        `${API_URL}/api/users/${user.username}/favorites`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

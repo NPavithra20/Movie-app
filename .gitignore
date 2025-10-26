@@ -14,3 +14,9 @@ frontend/node_modules/
 backend/node_modules/
 frontend/dist/
 backend/dist/
+
+frontend/package-lock.json
+backend/package-lock.json
+backend/public/movies/
+
+backend.zip

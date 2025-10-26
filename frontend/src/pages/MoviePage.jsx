@@ -9,6 +9,8 @@ function MoviePage() {
   const currentUser = useSelector((state) => state.user.user);
   const navigate = useNavigate();
 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
   const [movie, setMovie] = useState(null);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [comments, setComments] = useState([]);
@@ -27,13 +29,14 @@ function MoviePage() {
     const fetchMovie = async () => {
       try {
         // try by id
-        let res = await fetch(`http://localhost:5000/api/movies/${id}`);
+        let res = await fetch(`${API_URL}/api/movies/${id}`);
         let data = await res.json();
 
         // if data invalid, try by movieId query
         if (!res.ok || !data || Object.keys(data).length === 0) {
           const retry = await fetch(
-            `http://localhost:5000/api/movies?movieId=${id}`
+            // ✅ 2. Fixed a missing "/" before "api"
+            `${API_URL}/api/movies?movieId=${id}`
           );
           data = await retry.json();
           if (Array.isArray(data)) data = data[0];
@@ -46,7 +49,7 @@ function MoviePage() {
         setLoadingComments(false);
 
         // fetch all for similar movies
-        const allRes = await fetch("http://localhost:5000/api/movies");
+        const allRes = await fetch(`${API_URL}/api/movies`);
         const allMovies = await allRes.json();
 
         const sims = allMovies.filter(
@@ -77,14 +80,11 @@ function MoviePage() {
         img: movie.img,
       },
     };
-    fetch(
-      `http://localhost:5000/api/users/${currentUser.username}/recentlyViewed`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }
-    ).catch((e) => console.error("recentlyViewed error", e));
+    fetch(`${API_URL}/api/users/${currentUser.username}/recentlyViewed`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).catch((e) => console.error("recentlyViewed error", e));
   }, [movie, currentUser]);
 
   // ✅ Comment handler
@@ -95,18 +95,16 @@ function MoviePage() {
 
     try {
       const movieId = movie.movieId ?? movie._id ?? movie.id ?? id;
-      const res = await fetch(
-        `http://localhost:5000/api/movies/${movieId}/comments`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: currentUser.username,
-            comment: newComment,
-            rating,
-          }),
-        }
-      );
+      // ✅ 3. Replaced localhost with API_URL
+      const res = await fetch(`${API_URL}/api/movies/${movieId}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: currentUser.username,
+          comment: newComment,
+          rating,
+        }),
+      });
 
       const updated = await res.json();
       if (!res.ok) throw new Error(updated.message || "Failed to post comment");
@@ -125,10 +123,8 @@ function MoviePage() {
   const handleDownload = () => {
     if (!movie) return;
     const movieId = movie.movieId ?? movie._id ?? id;
-    window.open(
-      `http://localhost:5000/api/movies/download/${movieId}`,
-      "_blank"
-    );
+    // ✅ 4. Replaced localhost with API_URL
+    window.open(`${API_URL}/api/movies/download/${movieId}`, "_blank");
   };
 
   // ✅ Favorite handler
@@ -144,8 +140,9 @@ function MoviePage() {
         (m) => m.id === moviePayload.id
       );
 
+      // ✅ 5. Replaced localhost with API_URL
       const res = await fetch(
-        `http://localhost:5000/api/users/${currentUser.username}/favorites`,
+        `${API_URL}/api/users/${currentUser.username}/favorites`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -163,6 +160,7 @@ function MoviePage() {
 
   const handleBack = () => navigate("/movies");
 
+  // ... (rest of your component is unchanged) ...
   // ✅ Render section
   if (loading)
     return (

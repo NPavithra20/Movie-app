@@ -11,6 +11,8 @@ export default function Movies() {
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [movies, setMovies] = useState([]);
 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
   const isDark = useSelector((state) => state.theme.isDark);
   const currentUser = useSelector((state) => state.user.user);
 
@@ -18,7 +20,7 @@ export default function Movies() {
 
   // Fetch movies from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/movies")
+    fetch(`${API_URL}/api/movies`)
       .then((res) => res.json())
       .then((data) => {
         const mapped = (data || []).map((m) => {
@@ -39,7 +41,7 @@ export default function Movies() {
   // Load user favorites + recentlyViewed
   useEffect(() => {
     if (!currentUser) return;
-    fetch(`http://localhost:5000/api/users/${currentUser.username}`)
+    fetch(`${API_URL}/api/users/${currentUser.username}`)
       .then((res) => res.json())
       .then((data) => {
         setFavorites(data.favorites || []);
@@ -61,7 +63,7 @@ export default function Movies() {
         remove: isFav,
       };
       const res = await fetch(
-        `http://localhost:5000/api/users/${currentUser.username}/favorites`,
+        `${API_URL}/api/users/${currentUser.username}/favorites`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -83,7 +85,7 @@ export default function Movies() {
         movie: { id: movie.id, name: movie.name, img: movie.img },
       };
       const res = await fetch(
-        `http://localhost:5000/api/users/${currentUser.username}/recentlyViewed`,
+        `${API_URL}/api/users/${currentUser.username}/recentlyViewed`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

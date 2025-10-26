@@ -6,6 +6,7 @@ import Navbar from "../Navbar";
 export default function RecentlyViewed() {
   const { user } = useSelector((state) => state.user); // stays compatible
   const isDark = useSelector((state) => state.theme.isDark);
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -14,7 +15,7 @@ export default function RecentlyViewed() {
     if (!user || !user.username) return;
 
     fetch(
-      `http://localhost:5000/api/users/${encodeURIComponent(user.username)}`
+      `${API_URL}/api/users/${encodeURIComponent(user.username)}`
     )
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load user");
@@ -53,7 +54,7 @@ export default function RecentlyViewed() {
         remove: isFav,
       };
       const res = await fetch(
-        `http://localhost:5000/api/users/${encodeURIComponent(
+        `${API_URL}/api/users/${encodeURIComponent(
           user.username
         )}/favorites`,
         {

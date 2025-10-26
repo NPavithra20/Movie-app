@@ -16,6 +16,9 @@ function Signup() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -29,7 +32,7 @@ function Signup() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/users/signup", {
+      const res = await fetch(`${API_URL}/api/users/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
