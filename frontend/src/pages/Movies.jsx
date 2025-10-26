@@ -11,7 +11,7 @@ export default function Movies() {
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [movies, setMovies] = useState([]);
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   const isDark = useSelector((state) => state.theme.isDark);
   const currentUser = useSelector((state) => state.user.user);

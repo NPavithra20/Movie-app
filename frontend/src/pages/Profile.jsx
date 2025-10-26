@@ -10,7 +10,7 @@ export default function Profile() {
   const { user } = useSelector((state) => state.user);
   const isDark = useSelector((state) => state.theme.isDark);
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   const [profile, setProfile] = useState({
     name: "",
